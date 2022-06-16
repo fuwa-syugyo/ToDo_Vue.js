@@ -6,24 +6,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task App</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://unpkg.com/vue/dist/vue.js"></script>
+    <link href="https://unpkg.com/todomvc-app-css@2.2.0/index.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue@next"></script>
 </head>
 <body>
 
     <div id="app">
         <h2>ToDo App</h2>
-        <form v-on:submit.prevent>
-            <input type="text" v-model="newItem">
-            <button v-on:click="addItem">追加</button>
+        <form v-on:submit.prevent> <!-- v-on以下はページのリロードを止めるため -->
+            <input type="text" placeholder="Todoを入力してください" v-model="newTodo">
+            <button v-on:click="addTodo">追加</button>
         </form>
         <ul>
             <li v-for="(todo, index) in todos">
-                <input type="checkbox" v-model="todo.isDone">
-                <span v-bind:class="{ done: todo.isDone }">{{ todo.item }}</span>
-                <button v-on:click="deleteItem(index)">削除</button>
+                <input type="checkbox" v-model="todo.completed">
+                <span v-bind:class="{ done: todo.completed }">{{ todo.title }}</span>
+                <button v-on:click="deleteTodo(index)">削除</button>
             </li>
         </ul>
+        <pre>{{ $data }}</pre>
     </div>
-    <script src="https://unpkg.com/vue@next"></script>
+    <!-- <script src="https://unpkg.com/vue@next"></script> -->
     <script src="js/main.js"></script>
 </body>
 </html>
