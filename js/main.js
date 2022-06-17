@@ -18,6 +18,21 @@ const app = Vue.createApp({
     newTodo: '',
     todos: todoStorage.fetch()
   }),
+  watch: {
+    todos: {
+      handler(todos) {
+        todoStorage.save(todos)
+      },
+	  deep: true
+    }
+  },
+  computed: {
+  },
+  filters: {
+	  pluralize(n) {
+		  return n === 1 ? 'item' : 'items'
+	  }
+  },
   methods: {
     addTodo: function(event) {
       const value = this.newTodo && this.newTodo.trim();
