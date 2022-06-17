@@ -27,6 +27,13 @@ const app = Vue.createApp({
     }
   },
   computed: {
+	  filteredTodos() {
+		  return this.todos
+	  },
+	  remaining() {
+		  const todos = this.getActive(this.todos)
+		  return todos.length
+	  }
   },
   filters: {
 	  pluralize(n) {
@@ -48,7 +55,12 @@ const app = Vue.createApp({
 		},
     deleteTodo: function(index) {
       this.todos.splice(index, 1)
-    }
+    },
+	getActive(todos) {
+		return todos.filter((todo) =>
+			!todo.completed
+		)
+	}
   }
 })
 app.mount('#app')

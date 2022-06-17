@@ -19,12 +19,20 @@
             <button v-on:click="addTodo">追加</button>
         </form>
         <ul>
-            <li v-for="(todo, index) in todos">
+            <li v-for="(todo, index) in filteredTodos">
                 <input type="checkbox" v-model="todo.completed">
                 <span v-bind:class="{ done: todo.completed }">{{ todo.title }}</span>
                 <button v-on:click="deleteTodo(index)">削除</button>
             </li>
         </ul>
+        <footer class="footer" v-show="todos.length" v-cloak>
+            <span class="todo-count">
+                残り<strong>{{ remaining }}</strong>タスク
+            </span>
+        </footer>
+        <footer class="info">
+            <p>ダブルクリックしてタスクを編集してください</p>
+          </footer>
         <pre>{{ $data }}</pre>
     </div>
     <!-- <script src="https://unpkg.com/vue@next"></script> -->
