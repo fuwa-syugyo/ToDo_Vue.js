@@ -33,7 +33,6 @@ const app = Vue.createApp({
   data:() => ({
     todos: todoStorage.fetch(),
     newTodo: '',
-    visibility: 'all',
 	editedTodo: null,
 	beforeEditCache: ''
   }),
@@ -46,15 +45,10 @@ const app = Vue.createApp({
     }
   },
   computed: {
-	  filteredTodos() {
-		  return filters[this.visibility](this.todos)
-	  },
 	  remaining() {
 		  const todos = filters.active(this.todos)
 		  return todos.length
 	  }
-  },
-  filters: {
   },
   methods: {
 	  addTodo() {
@@ -102,16 +96,4 @@ const app = Vue.createApp({
 	}
   })
 
-function onHashChange() {
-	const visibility = window.location.hash.replace(/#\/?/, '')
-	if (filters[visibility]) {
-		app.visibility = visibility
-		console.log(app.visibility)
-	} else {
-		window.location.hash = ''
-		app.visibility = 'all'
-	}
-}
-window.addEventListener('hashchange', onHashChange)
-onHashChange()
 app.mount('#app')

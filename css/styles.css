@@ -1,6 +1,5 @@
 .todo-list li.editing .edit {
 	display: block;
-
 }
 
 .todo-list li.editing .view {
@@ -9,4 +8,8 @@
 
 .todo-list li .edit {
 	display: none;
+}
+
+.newTodo   {
+    width: 60%;
 }

@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task App</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <script src="https://unpkg.com/vue/dist/vue.js"></script>
-    <link href="https://unpkg.com/todomvc-app-css@2.2.0/index.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
+    <link href="css/styles.css" rel="stylesheet">
+    <link href="https://unpkg.com/todomvc-app-css@2.4.0/index.css" rel="stylesheet">
     <script src="https://unpkg.com/vue@next"></script>
 </head>
 <body>
@@ -14,17 +14,15 @@
     <div id="app">
         <section class="todoapp">
             <header class="header">
-                <h1>ToDo App</h1>
+                <h1>ToDoアプリ</h1>
                 <input class="newTodo"
-                autofocus
-                autocomplete="off"
-                placeholder="Todoを入力してください"
+                placeholder="タスクを入力してください"
                 v-model="newTodo"
                 v-on:keypress.enter="addTodo">
             </header>
             <section class="main" v-show="todos.length" v-cloak>
                 <ul class="todo-list">
-                    <li v-for="(todo, index) in filteredTodos"
+                    <li v-for="(todo, index) in todos"
                         class="todo"
                         v-bind:key="todo.id"
                         v-bind:class="{completed: todo.completed, editing: todo == editedTodo}">
@@ -42,18 +40,12 @@
                     </li>
                 </ul>
             </section>
-        <footer class="footer" v-show="todos.length" v-cloak>
-            <span class="todo-count">
-                残り<strong>{{ remaining }}</strong>タスク
-            </span>
-            <!-- <ul class="filters">
-                <li><a href="#/all" v-bind:class="{selected: visibility === 'all'}">すべて</a></li>
-                <li><a href="#/active" v-bind:class="{selected: visibility === 'active'}">まだしてない</a></li>
-                <li><a href="#/completed" v-bind:class="{selected: visibility === 'completed'}">終わった</a></li>
-            </ul> -->
-        </footer>
-        <!-- <pre>{{ $data }}</pre> -->
-    </section>
+            <footer class="footer" v-show="todos.length" v-cloak>
+                <span class="todo-count">
+                    残り<strong>{{ remaining }}</strong>タスク
+                </span>
+            </footer>
+        </section>
     </div>
     <script src="js/main.js"></script>
 </body>
