@@ -2,7 +2,6 @@
 <html lang ="ja">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task App</title>
     <link rel="stylesheet" href="css/styles.css">
@@ -13,29 +12,49 @@
 <body>
 
     <div id="app">
-        <h2>ToDo App</h2>
-        <form v-on:submit.prevent> <!-- v-on以下はページのリロードを止めるため -->
-            <input type="text" placeholder="Todoを入力してください" v-model="newTodo">
-            <button v-on:click="addTodo">追加</button>
-        </form>
-        <ul>
-            <li v-for="(todo, index) in filteredTodos">
-                <input type="checkbox" v-model="todo.completed">
-                <span v-bind:class="{ done: todo.completed }">{{ todo.title }}</span>
-                <button v-on:click="deleteTodo(index)">削除</button>
-            </li>
-        </ul>
+        <section class="todoapp">
+            <header class="header">
+                <h1>ToDo App</h1>
+                <input class="newTodo"
+                autofocus
+                autocomplete="off"
+                placeholder="Todoを入力してください"
+                v-model="newTodo"
+                v-on:keypress.enter="addTodo">
+            </header>
+            <section class="main" v-show="todos.length" v-cloak>
+                <ul class="todo-list">
+                    <li v-for="(todo, index) in filteredTodos"
+                        class="todo"
+                        v-bind:key="todo.id"
+                        v-bind:class="{completed: todo.completed, editing: todo == editedTodo}">
+                        <div class="view">
+                            <input class="toggle" type="checkbox" v-model="todo.completed">
+                            <label v-on:dblclick="editTodo(todo)">{{todo.title}}</label>
+                            <button class="destroy" v-on:click="deleteTodo(index)"></button>
+                        </div>
+                        <input class="edit" type="text"
+                            v-model="todo.title"
+                            v-on:keypress.enter="doneEdit(todo)"
+                            v-on:keyup.esc="cancelEdit(todo)"
+                            v-todo-focus="todo == editedTodo"
+                            v-on:blur="doneEdit(todo)">
+                    </li>
+                </ul>
+            </section>
         <footer class="footer" v-show="todos.length" v-cloak>
             <span class="todo-count">
                 残り<strong>{{ remaining }}</strong>タスク
             </span>
+            <!-- <ul class="filters">
+                <li><a href="#/all" v-bind:class="{selected: visibility === 'all'}">すべて</a></li>
+                <li><a href="#/active" v-bind:class="{selected: visibility === 'active'}">まだしてない</a></li>
+                <li><a href="#/completed" v-bind:class="{selected: visibility === 'completed'}">終わった</a></li>
+            </ul> -->
         </footer>
-        <footer class="info">
-            <p>ダブルクリックしてタスクを編集してください</p>
-          </footer>
-        <pre>{{ $data }}</pre>
+        <!-- <pre>{{ $data }}</pre> -->
+    </section>
     </div>
-    <!-- <script src="https://unpkg.com/vue@next"></script> -->
     <script src="js/main.js"></script>
 </body>
 </html>

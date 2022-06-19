@@ -1,22 +1,41 @@
-const STORAGE_KEY = 'todos-vuejs-3.0';
+const STORAGE_KEY = 'todos-vuejs-3.0'
 const todoStorage = {
 	fetch() {
-		const todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+		const todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
 		todos.forEach((todo, index) =>
 			todo.id = index
 		);
-		todoStorage.uid = todos.length;
-		return todos;
+		todoStorage.uid = todos.length
+		return todos
 	},
 	save(todos) {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(todos));
+		localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+	}
+}
+
+const filters = {
+	all(todos) {
+		return todos
+	},
+	active(todos) {
+		return todos.filter((todo) =>
+			!todo.completed
+		)
+	},
+	completed(todos) {
+		return todos.filter((todo) =>
+			todo.completed
+		)
 	}
 }
 
 const app = Vue.createApp({
   data:() => ({
+    todos: todoStorage.fetch(),
     newTodo: '',
-    todos: todoStorage.fetch()
+    visibility: 'all',
+	editedTodo: null,
+	beforeEditCache: ''
   }),
   watch: {
     todos: {
@@ -28,21 +47,18 @@ const app = Vue.createApp({
   },
   computed: {
 	  filteredTodos() {
-		  return this.todos
+		  return filters[this.visibility](this.todos)
 	  },
 	  remaining() {
-		  const todos = this.getActive(this.todos)
+		  const todos = filters.active(this.todos)
 		  return todos.length
 	  }
   },
   filters: {
-	  pluralize(n) {
-		  return n === 1 ? 'item' : 'items'
-	  }
   },
   methods: {
-    addTodo: function(event) {
-      const value = this.newTodo && this.newTodo.trim();
+	  addTodo() {
+        const value = this.newTodo && this.newTodo.trim();
 			if (!value) {
 				return;
 			}
@@ -52,15 +68,50 @@ const app = Vue.createApp({
 				completed: false
 			});
 			this.newTodo = '';
-		},
-    deleteTodo: function(index) {
-      this.todos.splice(index, 1)
+	  },
+      deleteTodo: function(index) {
+        this.todos.splice(index, 1)
+      },
+	  editTodo(todo) {
+		  this.beforeEditCache = todo.title
+		  this.editedTodo = todo
+	  },
+	  doneEdit(todo) {
+		  if (!this.editedTodo) {
+			  return
+		  }
+		  this.editedTodo = null
+		  const title = todo.title.trim()
+		  if (title) {
+			  todo.title = title
+		  } else {
+			  this.deleteTodo(todo)
+		  }
+	  },
+	  cancelEdit(todo) {
+		  this.editedTodo = null
+		  todo.title = this.beforeEditCache
+	  }
     },
-	getActive(todos) {
-		return todos.filter((todo) =>
-			!todo.completed
-		)
+	directives: {
+		'todo-focus' (element, binding) {
+			if (binding.value) {
+				element.focus()
+			}
+		}
 	}
-  }
-})
+  })
+
+function onHashChange() {
+	const visibility = window.location.hash.replace(/#\/?/, '')
+	if (filters[visibility]) {
+		app.visibility = visibility
+		console.log(app.visibility)
+	} else {
+		window.location.hash = ''
+		app.visibility = 'all'
+	}
+}
+window.addEventListener('hashchange', onHashChange)
+onHashChange()
 app.mount('#app')

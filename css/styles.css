@@ -1,7 +1,12 @@
-#app ul {
-    list-style: none;
+.todo-list li.editing .edit {
+	display: block;
+
 }
 
-#app li > span.done {
-    text-decoration: line-through;
+.todo-list li.editing .view {
+	display: none;
+}
+
+.todo-list li .edit {
+	display: none;
 }
