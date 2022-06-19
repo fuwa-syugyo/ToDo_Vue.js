@@ -30,29 +30,29 @@ const filters = {
 }
 
 const app = Vue.createApp({
-  data:() => ({
-    todos: todoStorage.fetch(),
-    newTodo: '',
-	editedTodo: null,
-	beforeEditCache: ''
-  }),
-  watch: {
-    todos: {
-      handler(todos) {
-        todoStorage.save(todos)
-      },
-	  deep: true
-    }
-  },
-  computed: {
-	  remaining() {
-		  const todos = filters.active(this.todos)
-		  return todos.length
-	  }
-  },
-  methods: {
-	  addTodo() {
-        const value = this.newTodo && this.newTodo.trim();
+	data:() => ({
+		todos: todoStorage.fetch(),
+		newTodo: '',
+		editedTodo: null,
+		beforeEditCache: ''
+	}),
+	watch: {
+		todos: {
+			handler(todos) {
+				todoStorage.save(todos)
+			},
+		deep: true
+		}
+	},
+	computed: {
+		remaining() {
+			const todos = filters.active(this.todos)
+			return todos.length
+		}
+	},
+	methods: {
+		addTodo() {
+			const value = this.newTodo && this.newTodo.trim()
 			if (!value) {
 				return;
 			}
@@ -61,32 +61,32 @@ const app = Vue.createApp({
 				title: value,
 				completed: false
 			});
-			this.newTodo = '';
-	  },
-      deleteTodo: function(index) {
-        this.todos.splice(index, 1)
-      },
-	  editTodo(todo) {
-		  this.beforeEditCache = todo.title
-		  this.editedTodo = todo
-	  },
-	  doneEdit(todo) {
-		  if (!this.editedTodo) {
-			  return
-		  }
-		  this.editedTodo = null
-		  const title = todo.title.trim()
-		  if (title) {
-			  todo.title = title
-		  } else {
-			  this.deleteTodo(todo)
-		  }
-	  },
-	  cancelEdit(todo) {
-		  this.editedTodo = null
-		  todo.title = this.beforeEditCache
-	  }
-    },
+			this.newTodo = ''
+		},
+		deleteTodo: function(index) {
+			this.todos.splice(index, 1)
+		},
+		editTodo(todo) {
+			this.beforeEditCache = todo.title
+			this.editedTodo = todo
+		},
+		doneEdit(todo) {
+			if (!this.editedTodo) {
+				return
+			}
+			this.editedTodo = null
+			const title = todo.title.trim()
+			if (title) {
+				todo.title = title
+			} else {
+				this.deleteTodo(todo)
+			}
+		},
+		cancelEdit(todo) {
+			this.editedTodo = null
+			todo.title = this.beforeEditCache
+		}
+	},
 	directives: {
 		'todo-focus' (element, binding) {
 			if (binding.value) {
@@ -94,6 +94,6 @@ const app = Vue.createApp({
 			}
 		}
 	}
-  })
+})
 
 app.mount('#app')
