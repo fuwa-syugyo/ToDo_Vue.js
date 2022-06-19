@@ -1,52 +1,50 @@
 <!DOCTYPE html>
 <html lang ="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task App</title>
-    <!-- <link rel="stylesheet" href="css/styles.css"> -->
-    <link href="css/styles.css" rel="stylesheet">
-    <link href="https://unpkg.com/todomvc-app-css@2.4.0/index.css" rel="stylesheet">
-    <script src="https://unpkg.com/vue@next"></script>
-</head>
-<body>
-
-    <div id="app">
-        <section class="todoapp">
-            <header class="header">
-                <h1>ToDoアプリ</h1>
-                <input class="newTodo"
-                placeholder="タスクを入力してください"
-                v-model="newTodo"
-                v-on:keypress.enter="addTodo">
-            </header>
-            <section class="main" v-show="todos.length" v-cloak>
-                <ul class="todo-list">
-                    <li v-for="(todo, index) in todos"
-                        class="todo"
-                        v-bind:key="todo.id"
-                        v-bind:class="{completed: todo.completed, editing: todo == editedTodo}">
-                        <div class="view">
-                            <input class="toggle" type="checkbox" v-model="todo.completed">
-                            <label v-on:dblclick="editTodo(todo)">{{todo.title}}</label>
-                            <button class="destroy" v-on:click="deleteTodo(index)"></button>
-                        </div>
-                        <input class="edit" type="text"
-                            v-model="todo.title"
-                            v-on:keypress.enter="doneEdit(todo)"
-                            v-on:keyup.esc="cancelEdit(todo)"
-                            v-todo-focus="todo == editedTodo"
-                            v-on:blur="doneEdit(todo)">
-                    </li>
-                </ul>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ToDo App</title>
+        <link href="css/styles.css" rel="stylesheet">
+        <link href="https://unpkg.com/todomvc-app-css@2.4.0/index.css" rel="stylesheet">
+        <script src="https://unpkg.com/vue@next"></script>
+    </head>
+    <body>
+        <div id="app">
+            <section class="todoapp">
+                <header class="header">
+                    <h1>ToDo App</h1>
+                    <input class="newTodo"
+                    placeholder="タスクを入力してください"
+                    v-model="newTodo"
+                    v-on:keypress.enter="addTodo">
+                </header>
+                <section class="main" v-show="todos.length" v-cloak>
+                    <ul class="todo-list">
+                        <li v-for="(todo, index) in todos"
+                            class="todo"
+                            v-bind:key="todo.id"
+                            v-bind:class="{completed: todo.completed, editing: todo == editedTodo}">
+                            <div class="view">
+                                <input class="toggle" type="checkbox" v-model="todo.completed">
+                                <label v-on:dblclick="editTodo(todo)">{{todo.title}}</label>
+                                <button class="destroy" v-on:click="deleteTodo(index)"></button>
+                            </div>
+                            <input class="edit" type="text"
+                                v-model="todo.title"
+                                v-on:keypress.enter="doneEdit(todo)"
+                                v-on:keyup.esc="cancelEdit(todo)"
+                                v-todo-focus="todo == editedTodo"
+                                v-on:blur="doneEdit(todo)">
+                        </li>
+                    </ul>
+                </section>
+                <footer class="footer" v-show="todos.length" v-cloak>
+                    <span class="todo-count">
+                        残り<strong>{{ remaining }}</strong>タスク
+                    </span>
+                </footer>
             </section>
-            <footer class="footer" v-show="todos.length" v-cloak>
-                <span class="todo-count">
-                    残り<strong>{{ remaining }}</strong>タスク
-                </span>
-            </footer>
-        </section>
-    </div>
-    <script src="js/main.js"></script>
-</body>
+        </div>
+        <script src="js/main.js"></script>
+    </body>
 </html>
