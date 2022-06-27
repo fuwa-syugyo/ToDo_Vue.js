@@ -30,12 +30,14 @@ const filters = {
 }
 
 const app = Vue.createApp({
-	data:() => ({
-		todos: todoStorage.fetch(),
-		newTodo: '',
-		editedTodo: null,
-		beforeEditCache: ''
-	}),
+	data: function () {
+		return {
+			todos: todoStorage.fetch(),
+			newTodo: '',
+			editedTodo: null,
+			beforeEditCache: ''
+	  }
+	},
 	watch: {
 		todos: {
 			handler(todos) {
