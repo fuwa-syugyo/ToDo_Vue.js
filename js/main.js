@@ -1,22 +1,8 @@
 const STORAGE_KEY = 'todos-vuejs-3.0'
-const todoStorage = {
-	fetch() {
-		const todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
-		todos.forEach((todo, index) =>
-			todo.id = index
-		)
-		todoStorage.uid = todos.length
-		return todos
-	},
-	save(todos) {
-		localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
-	}
-}
-
 const app = Vue.createApp({
 	data: function () {
 		return {
-			todos: todoStorage.fetch(),
+			todos: this.todoFetch(),
 			newTodo: '',
 			editedTodo: null,
 			beforeEditCache: ''
@@ -25,7 +11,7 @@ const app = Vue.createApp({
 	watch: {
 		todos: {
 			handler(todos) {
-				todoStorage.save(todos)
+				this.todoSave(todos)
 			},
 		deep: true
 		}
@@ -39,13 +25,24 @@ const app = Vue.createApp({
 		}
 	},
 	methods: {
+		todoFetch(){
+			const todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+			todos.forEach((todo, index) =>
+				todo.id = index
+			)
+			this.uid = todos.length
+			return todos
+		},
+		todoSave(todos){
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
+		},
 		addTodo() {
 			const value = this.newTodo && this.newTodo.trim()
 			if (!value) {
 				return
 			}
 			this.todos.push({
-				id: todoStorage.uid++,
+				id: this.todoFetch().uid++,
 				title: value,
 				completed: false
 			})
