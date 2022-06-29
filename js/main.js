@@ -6,7 +6,7 @@ const app = Vue.createApp({
 			newTodo: '',
 			editedTodo: null,
 			beforeEditCache: ''
-	  }
+		}
 	},
 	watch: {
 		todos: {
