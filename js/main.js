@@ -2,22 +2,22 @@ const STORAGE_KEY = 'todos-vuejs-3.0'
 const app = Vue.createApp({
 	data: function () {
 		return {
-			todos: this.todoFetch(),
+			todos: this.fetchTodos(),
 			newTodo: '',
 			editedTodo: null,
 			beforeEditCache: ''
 		}
 	},
 	computed: {
-		active() {
+		returnActiveTodos() {
 			return this.todos.filter((todo) => !todo.completed)
 		},
-		remaining() {
-			return this.active.length
+		activeTodoCount() {
+			return this.returnActiveTodos.length
 		}
 	},
 	methods: {
-		todoFetch(){
+		fetchTodos(){
 			const todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
 			todos.forEach((todo, index) =>
 				todo.id = index
@@ -25,7 +25,7 @@ const app = Vue.createApp({
 			this.uid = todos.length
 			return todos
 		},
-		todoSave(todos){
+		saveTodos(todos){
 			localStorage.setItem(STORAGE_KEY, JSON.stringify(todos))
 		},
 		addTodo() {
@@ -34,21 +34,21 @@ const app = Vue.createApp({
 				return
 			}
 			this.todos.push({
-				id: this.todoFetch().uid++,
+				id: this.fetchTodos().uid++,
 				title: value,
 				completed: false
 			})
 			this.newTodo = ''
-			this.todoSave(this.todos)
+			this.saveTodos(this.todos)
 		},
 		deleteTodo: function(index) {
 			this.todos.splice(index, 1)
-			this.todoSave(this.todos)
+			this.saveTodos(this.todos)
 		},
 		editTodo(todo) {
 			this.beforeEditCache = todo.title
 			this.editedTodo = todo
-			this.todoSave(this.todos)
+			this.saveTodos(this.todos)
 		},
 		doneEdit(todo) {
 			if (!this.editedTodo) {
@@ -61,12 +61,15 @@ const app = Vue.createApp({
 			} else {
 				this.deleteTodo(todo)
 			}
-			this.todoSave(this.todos)
+			this.saveTodos(this.todos)
 		},
 		cancelEdit(todo) {
 			this.editedTodo = null
 			todo.title = this.beforeEditCache
-		}
+		},
+		saveCheckbox(todo){
+			this.saveTodos(this.todos)
+		},
 	},
 	directives: {
 		'todo-focus' (element, binding) {
