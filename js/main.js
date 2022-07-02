@@ -8,14 +8,6 @@ const app = Vue.createApp({
 			beforeEditCache: ''
 		}
 	},
-	watch: {
-		todos: {
-			handler(todos) {
-				this.todoSave(todos)
-			},
-		deep: true
-		}
-	},
 	computed: {
 		active() {
 			return this.todos.filter((todo) => !todo.completed)
@@ -47,13 +39,16 @@ const app = Vue.createApp({
 				completed: false
 			})
 			this.newTodo = ''
+			this.todoSave(this.todos)
 		},
 		deleteTodo: function(index) {
 			this.todos.splice(index, 1)
+			this.todoSave(this.todos)
 		},
 		editTodo(todo) {
 			this.beforeEditCache = todo.title
 			this.editedTodo = todo
+			this.todoSave(this.todos)
 		},
 		doneEdit(todo) {
 			if (!this.editedTodo) {
@@ -66,6 +61,7 @@ const app = Vue.createApp({
 			} else {
 				this.deleteTodo(todo)
 			}
+			this.todoSave(this.todos)
 		},
 		cancelEdit(todo) {
 			this.editedTodo = null
