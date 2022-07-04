@@ -25,7 +25,7 @@
               v-bind:key="todo.id"
               v-bind:class="{completed: todo.completed, editing: todo == editedTodo}">
               <div class="view">
-                <input class="toggle" type="checkbox" v-model="todo.completed">
+                <input class="toggle" type="checkbox" v-model="todo.completed" v-on:click="saveTodos(todos)">
                 <label v-on:dblclick="editTodo(todo)">{{todo.title}}</label>
                 <button class="destroy" v-on:click="deleteTodo(index)"></button>
               </div>
