@@ -41,7 +41,7 @@ const app = Vue.createApp({
       this.newTodo = ''
       this.saveTodos(this.todos)
     },
-    deleteTodo: function(index) {
+    deleteTodo(index) {
       this.todos.splice(index, 1)
       this.saveTodos(this.todos)
     },
