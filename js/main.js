@@ -19,10 +19,6 @@ const app = Vue.createApp({
   methods: {
     fetchTodos(){
       const todos = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
-      todos.forEach((todo, index) =>
-        todo.id = index
-      )
-      this.uid = todos.length
       return todos
     },
     saveTodos(todos){
@@ -34,7 +30,7 @@ const app = Vue.createApp({
         return
       }
       this.todos.push({
-        id: this.fetchTodos().uid++,
+        id: uuidv4(),
         title: value,
         completed: false
       })
